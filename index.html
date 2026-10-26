@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff9e8">
+  <meta name="description" content="Un pequeño rincón para celebrar nuestra historia.">
+  <title>Para nosotros — un aniversario</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #fff9e8;
+      --paper: #fffdf7;
+      --sage: #64865e;
+      --sage-dark: #36583c;
+      --sage-pale: #e7eedc;
+      --rose: #cf7f91;
+      --sunshine: #d9b84f;
+      --ink: #29352d;
+      --muted: #68736a;
+      --line: #d9dfd5;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'DM Sans', Arial, sans-serif;
+      --shadow: 0 18px 60px rgb(54 68 55 / 9%);
+      color-scheme: light;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 92px; }
+    body { margin: 0; background: var(--cream); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; }
+    body.locked { overflow: hidden; }
+    button, a { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid var(--rose); outline-offset: 4px; }
+    .skip-link { position: fixed; z-index: 100; left: 1rem; top: 1rem; padding: .7rem 1rem; background: var(--paper); transform: translateY(-160%); }
+    .skip-link:focus { transform: translateY(0); }
+    .welcome { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 1.5rem; overflow: hidden; background: var(--cream); transition: opacity .7s ease, visibility .7s ease; }
+    .welcome.is-gone { opacity: 0; visibility: hidden; pointer-events: none; }
+    .welcome::before, .welcome::after { position: absolute; content: ''; width: min(66vw, 650px); aspect-ratio: 1; border: 1px solid rgb(100 134 94 / 23%); border-radius: 50%; }
+    .welcome::after { width: min(48vw, 470px); }
+    .welcome-card { position: relative; z-index: 1; max-width: 680px; padding: clamp(2rem, 8vw, 6rem); text-align: center; }
+    .eyebrow { color: var(--sage-dark); font-size: .72rem; font-weight: 700; letter-spacing: .19em; text-transform: uppercase; }
+    h1, h2, h3, p { margin-top: 0; }
+    .welcome h1 { margin: .8rem 0 1rem; font: 500 clamp(3.3rem, 12vw, 7.6rem)/.88 var(--serif); letter-spacing: -.045em; }
+    .welcome h1 span { color: var(--sage); font-style: italic; }
+    .welcome-copy { max-width: 420px; margin: 1.3rem auto 2rem; color: var(--muted); font-size: 1rem; }
+    .button { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: .65rem; border: 0; border-radius: 999px; padding: .8rem 1.35rem; background: var(--sage-dark); color: white; cursor: pointer; text-decoration: none; transition: transform .2s ease, background .2s ease; }
+    .button:hover { background: #344a3a; transform: translateY(-2px); }
+    .button.secondary { border: 1px solid var(--line); background: transparent; color: var(--ink); }
+    .button.secondary:hover { background: var(--sage-pale); }
+    .site { opacity: 0; transition: opacity .7s ease; }
+    .site.is-ready { opacity: 1; }
+    .topbar { position: sticky; top: 0; z-index: 10; border-bottom: 1px solid rgb(217 223 213 / 80%); background: rgb(255 249 232 / 94%); backdrop-filter: blur(12px); }
+    .nav-wrap { display: flex; max-width: 1200px; min-height: 68px; align-items: center; justify-content: space-between; gap: 1rem; margin: auto; padding: .4rem clamp(1rem, 4vw, 2rem); }
+    .brand { color: var(--sage-dark); font: 600 1.25rem var(--serif); text-decoration: none; white-space: nowrap; }
+    .nav-links { display: flex; align-items: center; gap: clamp(.65rem, 2.3vw, 1.5rem); margin: 0; padding: 0; list-style: none; }
+    .nav-links a { color: var(--muted); font-size: .78rem; font-weight: 600; text-decoration: none; }
+    .nav-links a:hover { color: var(--sage-dark); }
+    .nav-toggle { display: none; border: 1px solid var(--line); border-radius: 50%; width: 42px; height: 42px; background: var(--paper); cursor: pointer; }
+    main { overflow: hidden; }
+    .hero { position: relative; display: grid; min-height: min(700px, 83vh); align-items: center; max-width: 1200px; margin: auto; padding: clamp(4rem, 11vw, 8.5rem) clamp(1.25rem, 7vw, 6rem); }
+    .hero::after { position: absolute; z-index: -1; top: 10%; right: 6%; width: min(43vw, 480px); aspect-ratio: 1; border-radius: 48% 52% 64% 36% / 40% 45% 55% 60%; background: #f4edc9; content: ''; transform: rotate(-18deg); }
+    .hero-content { max-width: 650px; }
+    .hero h2 { margin: 1rem 0; font: 500 clamp(3.4rem, 10vw, 7.7rem)/.88 var(--serif); letter-spacing: -.045em; }
+    .hero h2 em { color: var(--sage); font-weight: 400; }
+    .hero p { max-width: 480px; color: var(--muted); }
+    .hero-note { display: inline-block; margin-top: 1.2rem; color: var(--sage-dark); font-size: .8rem; }
+    .section { max-width: 1200px; margin: auto; padding: clamp(4.5rem, 10vw, 8rem) clamp(1.25rem, 7vw, 6rem); }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2.5rem; }
+    .section-heading h2 { margin: .4rem 0 0; font: 500 clamp(2.8rem, 7vw, 5rem)/.92 var(--serif); letter-spacing: -.035em; }
+    .section-heading p { max-width: 340px; margin-bottom: .25rem; color: var(--muted); font-size: .9rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1rem; }
+    .photo-card { position: relative; grid-column: span 4; overflow: hidden; min-width: 0; border: 0; border-radius: 4px; padding: 0; background: transparent; text-align: left; cursor: zoom-in; }
+    .photo-card:nth-child(6n + 1), .photo-card:nth-child(6n + 5) { grid-column: span 5; }
+    .photo-card:nth-child(6n + 2), .photo-card:nth-child(6n + 4) { grid-column: span 3; }
+    .photo-art { position: relative; display: grid; min-height: 210px; aspect-ratio: 1.16; place-items: center; overflow: hidden; background: var(--sage-pale); transition: transform .45s ease; }
+    .photo-card:nth-child(3n + 2) .photo-art { background: #f4e5e8; }
+    .photo-card:nth-child(3n) .photo-art { background: #f3eccf; }
+    .photo-art::before, .flower-art::before { position: absolute; width: 68%; aspect-ratio: 1; border: 1px solid rgb(67 91 73 / 20%); border-radius: 50%; content: ''; }
+    .photo-art::after { position: absolute; width: 45%; aspect-ratio: 1; border: 1px solid rgb(67 91 73 / 15%); border-radius: 50%; content: ''; }
+    .photo-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .photo-placeholder { z-index: 1; max-width: 80%; color: var(--sage-dark); font: italic 1.15rem var(--serif); text-align: center; }
+    .photo-card:hover .photo-art { transform: scale(1.025); }
+    .photo-caption { display: flex; justify-content: space-between; gap: .7rem; padding: .75rem .15rem; }
+    .photo-caption span:first-child { font-size: .87rem; }
+    .photo-caption time { color: var(--muted); font-size: .72rem; white-space: nowrap; }
+    .timeline-section { background: var(--sage-pale); }
+    .timeline { position: relative; max-width: 770px; margin: 3rem auto 0; padding-left: 1.7rem; }
+    .timeline::before { position: absolute; top: .5rem; bottom: 1rem; left: 5px; width: 1px; background: #b7c4b5; content: ''; }
+    .event { position: relative; display: grid; grid-template-columns: 130px 1fr; gap: 1.5rem; padding: 0 0 2.8rem; }
+    .event::before { position: absolute; top: .3rem; left: -1.96rem; width: 11px; height: 11px; border: 2px solid var(--sage-dark); border-radius: 50%; background: var(--sage-pale); content: ''; }
+    .event-date { color: var(--sage-dark); font-size: .76rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .event h3 { margin: -.3rem 0 .4rem; font: 600 1.8rem/1.05 var(--serif); }
+    .event p { max-width: 500px; margin: 0; color: var(--muted); font-size: .9rem; }
+    .event img { width: min(100%, 310px); max-height: 200px; margin-top: 1rem; object-fit: cover; }
+    .quiz-wrap { max-width: 700px; margin: auto; border: 1px solid var(--line); background: var(--paper); padding: clamp(1.5rem, 5vw, 3rem); box-shadow: var(--shadow); }
+    .quiz-top { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); font-size: .8rem; }
+    .progress-track { height: 5px; margin: 1rem 0 2rem; overflow: hidden; border-radius: 99px; background: var(--sage-pale); }
+    .progress-fill { width: 0; height: 100%; background: var(--sage); transition: width .35s ease; }
+    .quiz-question { margin: 0 0 1.5rem; font: 600 clamp(1.8rem, 5vw, 2.5rem)/1 var(--serif); }
+    .answers { display: grid; gap: .65rem; }
+    .answer { min-height: 52px; border: 1px solid var(--line); border-radius: 3px; padding: .8rem 1rem; background: var(--paper); text-align: left; cursor: pointer; transition: border .2s, background .2s; }
+    .answer:hover:not(:disabled) { border-color: var(--sage); background: #f3f6f0; }
+    .answer:disabled { cursor: default; }
+    .answer.correct { border-color: var(--sage); background: var(--sage-pale); }
+    .answer.incorrect { border-color: #cf9891; background: #f5e9e6; }
+    .quiz-feedback { min-height: 3rem; margin: 1rem 0; color: var(--sage-dark); font-size: .9rem; }
+    .quiz-next { display: none; }
+    .quiz-next.is-visible { display: inline-flex; }
+    .quiz-result { display: none; text-align: center; }
+    .quiz-result.is-visible { display: block; }
+    .quiz-result h3 { margin: .5rem 0; font: 600 2.4rem var(--serif); }
+    .prize { margin: 1.3rem 0; border: 1px dashed #aab8a8; padding: 1.25rem; background: #f3f6f0; font: italic 1.5rem var(--serif); }
+    .garden-section { background: #f7f0d9; }
+    .flower-count { display: inline-block; margin-top: .6rem; color: var(--sage-dark); font-size: .8rem; font-weight: 700; }
+    .flower-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .flower-card { display: block; width: 100%; border: 1px solid var(--line); padding: 0; background: var(--paper); text-align: left; cursor: pointer; transition: transform .25s, box-shadow .25s; }
+    .flower-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .flower-art { position: relative; display: grid; min-height: 170px; place-items: center; overflow: hidden; background: #f4e9c9; }
+    .flower-art svg { position: relative; z-index: 1; width: 90px; height: 100px; color: var(--sage-dark); }
+    .flower-info { padding: 1rem 1.1rem 1.2rem; }
+    .flower-info h3 { margin: 0; font: 600 1.65rem var(--serif); }
+    .flower-info p { margin: .15rem 0 0; color: var(--muted); font-size: .77rem; }
+    .flower-note { margin-top: .5rem !important; color: var(--sage-dark) !important; }
+    .footer { padding: 3rem 1rem; color: var(--muted); text-align: center; font: italic 1.4rem var(--serif); }
+    dialog { width: min(92vw, 920px); max-width: none; max-height: 90vh; border: 0; padding: 0; background: var(--paper); color: var(--ink); box-shadow: 0 20px 90px rgb(0 0 0 / 30%); }
+    dialog::backdrop { background: rgb(28 38 30 / 78%); backdrop-filter: blur(4px); }
+    .lightbox-image { display: grid; min-height: 45vh; max-height: 72vh; place-items: center; background: var(--sage-pale); }
+    .lightbox-image img { max-width: 100%; max-height: 72vh; object-fit: contain; }
+    .lightbox-image .photo-placeholder { padding: 4rem 1rem; font-size: 2rem; }
+    .lightbox-meta { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.2rem; }
+    .lightbox-meta p { margin: 0; }
+    .lightbox-controls { display: flex; gap: .5rem; }
+    .icon-button { display: grid; width: 42px; height: 42px; flex: 0 0 auto; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--paper); cursor: pointer; }
+    .flower-dialog { width: min(90vw, 440px); padding: 2rem; }
+    .flower-dialog h2 { font: 600 2.7rem/.95 var(--serif); }
+    .flower-dialog p { color: var(--muted); }
+    .close-dialog { position: absolute; top: .7rem; right: .7rem; }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.is-visible { opacity: 1; transform: none; }
+    .confetti { position: fixed; z-index: 99; top: -15px; width: 9px; height: 14px; pointer-events: none; animation: fall 2.3s ease-in forwards; }
+    @keyframes fall { to { transform: translate3d(var(--drift), 105vh, 0) rotate(740deg); opacity: .2; } }
+    @media (max-width: 700px) {
+      .nav-wrap { min-height: 62px; }
+      .nav-toggle { display: grid; place-items: center; }
+      .nav-links { position: absolute; top: calc(100% + 1px); right: 0; left: 0; display: none; flex-direction: column; align-items: stretch; gap: 0; border-bottom: 1px solid var(--line); padding: .4rem 1.25rem 1rem; background: var(--cream); }
+      .nav-links.is-open { display: flex; }
+      .nav-links a { display: block; padding: .75rem 0; font-size: .9rem; }
+      .hero { min-height: 78vh; }
+      .hero::after { top: 13%; right: -23%; width: 70vw; }
+      .section-heading { display: block; }
+      .section-heading p { margin-top: 1rem; }
+      .photo-card, .photo-card:nth-child(n) { grid-column: span 6; }
+      .photo-card:nth-child(3n + 2) { margin-top: 2.2rem; }
+      .photo-art { min-height: 145px; aspect-ratio: .95; }
+      .photo-caption { display: block; }
+      .photo-caption time { display: block; margin-top: .1rem; }
+      .event { grid-template-columns: 1fr; gap: .3rem; padding-bottom: 2.2rem; }
+      .event-date { margin-bottom: .25rem; }
+      .timeline { margin-left: .6rem; }
+      .lightbox-meta { align-items: flex-start; }
+    }
+    @media (max-width: 390px) {
+      .photo-card, .photo-card:nth-child(n) { grid-column: span 12; }
+      .photo-art { aspect-ratio: 1.25; }
+      .quiz-wrap { padding: 1.3rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <section class="welcome" id="welcome" aria-labelledby="welcome-title">
+    <div class="welcome-card">
+      <span class="eyebrow">Un pequeño lugar para nosotros</span>
+      <h1 id="welcome-title">Para <span data-name>[NOMBRE]</span></h1>
+      <p class="welcome-copy" data-welcome>Hice este rincón para guardar lo que más me gusta: nuestras historias, incluso las pequeñas.</p>
+      <button class="button" id="start-button" type="button">Empezar <span aria-hidden="true">↗</span></button>
+    </div>
+  </section>
+
+  <div class="site" id="site">
+    <header class="topbar">
+      <nav class="nav-wrap" aria-label="Navegación principal">
+        <a class="brand" href="#inicio" data-name>[NOMBRE] &amp; yo</a>
+        <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links"><span aria-hidden="true">☰</span></button>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#fotos">Fotos</a></li><li><a href="#historia">Nuestra historia</a></li><li><a href="#quiz">Un juego</a></li><li><a href="#flores">El jardín</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="contenido">
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <span class="eyebrow">Una historia que sigue siendo nuestra</span>
+          <h2 id="hero-title">Lo nuestro,<br><em>a nuestra manera.</em></h2>
+          <p>Un paseo por momentos que todavía me hacen sonreír. No hace falta que sean extraordinarios; basta con que sean nuestros.</p>
+          <span class="hero-note" data-duration>Llevamos [TIEMPO] compartiendo el camino.</span>
+        </div>
+      </section>
+
+      <section class="section" id="fotos" aria-labelledby="gallery-title">
+        <div class="section-heading reveal">
+          <div><span class="eyebrow">Instantes guardados</span><h2 id="gallery-title">Pequeños recuerdos</h2></div>
+          <p>Un mosaico de días que, por alguna razón, se quedaron con nosotros. Toca una foto para verla mejor.</p>
+        </div>
+        <div class="gallery-grid" id="gallery-grid" aria-label="Galería de recuerdos"></div>
+      </section>
+
+      <section class="timeline-section" id="historia" aria-labelledby="timeline-title">
+        <div class="section">
+          <div class="section-heading reveal">
+            <div><span class="eyebrow">Capítulos compartidos</span><h2 id="timeline-title">Nuestra historia</h2></div>
+            <p>No es una lista de grandes hitos. Es la forma en que llegamos hasta aquí, paso a paso.</p>
+          </div>
+          <div class="timeline" id="timeline"></div>
+        </div>
+      </section>
+
+      <section class="section" id="quiz" aria-labelledby="quiz-title">
+        <div class="section-heading reveal">
+          <div><span class="eyebrow">A ver qué tanto te acuerdas</span><h2 id="quiz-title">Una ronda sobre nosotros</h2></div>
+          <p>Sin presión: algunas respuestas las sabemos de memoria y otras las inventamos sobre la marcha.</p>
+        </div>
+        <div class="quiz-wrap reveal" id="quiz-wrap">
+          <div id="quiz-game">
+            <div class="quiz-top"><span id="question-count">Pregunta 1 de 3</span><span id="score-label">Aciertos: 0</span></div>
+            <div class="progress-track" role="progressbar" aria-label="Progreso del cuestionario" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div>
+            <h3 class="quiz-question" id="quiz-question"></h3>
+            <div class="answers" id="answers"></div>
+            <p class="quiz-feedback" id="quiz-feedback" aria-live="polite"></p>
+            <button class="button quiz-next" id="quiz-next" type="button">Siguiente pregunta <span aria-hidden="true">→</span></button>
+          </div>
+          <div class="quiz-result" id="quiz-result" aria-live="polite">
+            <span class="eyebrow">La ronda termina aquí</span>
+            <h3 id="result-title"></h3><p id="result-copy"></p>
+            <div class="prize" id="prize-text"></div>
+            <button class="button" id="retry-button" type="button">Jugar otra vez</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="garden-section" id="flores" aria-labelledby="flowers-title">
+        <div class="section">
+          <div class="section-heading reveal">
+            <div><span class="eyebrow">Un jardín de momentos</span><h2 id="flowers-title">Nuestras flores</h2><span class="flower-count" id="flower-count"></span></div>
+            <p>Hay regalos que se marchitan y otros que se quedan, sobre todo por el momento que los acompaña.</p>
+          </div>
+          <div class="flower-grid" id="flower-grid"></div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><span data-name>[NOMBRE]</span>, gracias por todos los días que todavía no sabemos que serán nuestros.</footer>
+  </div>
+
+  <dialog id="lightbox" aria-label="Foto ampliada">
+    <div class="lightbox-image" id="lightbox-image"></div>
+    <div class="lightbox-meta">
+      <p><strong id="lightbox-caption"></strong><br><time id="lightbox-date"></time></p>
+      <div class="lightbox-controls">
+        <button class="icon-button" id="previous-photo" type="button" aria-label="Foto anterior">←</button>
+        <button class="icon-button" id="next-photo" type="button" aria-label="Foto siguiente">→</button>
+        <button class="icon-button" id="close-lightbox" type="button" aria-label="Cerrar foto">×</button>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="flower-dialog" id="flower-dialog" aria-labelledby="flower-dialog-title">
+    <button class="icon-button close-dialog" id="close-flower-dialog" type="button" aria-label="Cerrar recuerdo">×</button>
+    <span class="eyebrow">Una nota del jardín</span><h2 id="flower-dialog-title"></h2><p id="flower-dialog-copy"></p>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script>
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const escapeHTML = (value) => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+
+    // Personaliza los textos repetidos a partir de la configuración.
+    document.querySelectorAll('[data-name]').forEach(el => { el.textContent = CONFIG.name; });
+    $('[data-welcome]').textContent = CONFIG.welcome;
+    $('[data-duration]').textContent = `Llevamos ${CONFIG.duration} compartiendo el camino.`;
+    document.title = `Para ${CONFIG.name} — un aniversario`;
+
+    // Galería y lightbox accesible, con navegación por teclado y gesto horizontal.
+    const gallery = $('#gallery-grid');
+    let photoIndex = 0;
+    gallery.innerHTML = CONFIG.photos.map((photo, index) => `
+      <button class="photo-card" type="button" data-photo="${index}" aria-label="Ver foto: ${escapeHTML(photo.caption)}">
+        <span class="photo-art">${photo.src ? `<img src="${escapeHTML(photo.src)}" alt="${escapeHTML(photo.caption)}" loading="lazy">` : `<span class="photo-placeholder">Añade aquí<br>tu foto ${index + 1}</span>`}</span>
+        <span class="photo-caption"><span>${escapeHTML(photo.caption)}</span><time>${escapeHTML(photo.fecha)}</time></span>
+      </button>`).join('');
+    const lightbox = $('#lightbox');
+    function showPhoto(index) {
+      photoIndex = (index + CONFIG.photos.length) % CONFIG.photos.length;
+      const photo = CONFIG.photos[photoIndex];
+      $('#lightbox-image').innerHTML = photo.src ? `<img src="${escapeHTML(photo.src)}" alt="${escapeHTML(photo.caption)}">` : `<span class="photo-placeholder">Añade aquí tu foto ${photoIndex + 1}</span>`;
+      $('#lightbox-caption').textContent = photo.caption;
+      $('#lightbox-date').textContent = photo.fecha;
+    }
+    gallery.addEventListener('click', event => {
+      const card = event.target.closest('[data-photo]');
+      if (!card) return;
+      showPhoto(Number(card.dataset.photo));
+      lightbox.showModal();
+    });
+    $('#previous-photo').addEventListener('click', () => showPhoto(photoIndex - 1));
+    $('#next-photo').addEventListener('click', () => showPhoto(photoIndex + 1));
+    $('#close-lightbox').addEventListener('click', () => lightbox.close());
+    lightbox.addEventListener('click', event => { if (event.target === lightbox) lightbox.close(); });
+    document.addEventListener('keydown', event => {
+      if (!lightbox.open) return;
+      if (event.key === 'ArrowLeft') showPhoto(photoIndex - 1);
+      if (event.key === 'ArrowRight') showPhoto(photoIndex + 1);
+    });
+    let touchStartX = 0;
+    lightbox.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].screenX; }, { passive: true });
+    lightbox.addEventListener('touchend', event => {
+      const delta = event.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(delta) > 55) showPhoto(photoIndex + (delta < 0 ? 1 : -1));
+    }, { passive: true });
+
+    // Línea de tiempo: añade o quita objetos en CONFIG.events.
+    $('#timeline').innerHTML = CONFIG.events.map(event => `
+      <article class="event reveal"><time class="event-date">${escapeHTML(event.fecha)}</time><div><h3>${escapeHTML(event.titulo)}</h3><p>${escapeHTML(event.detalle)}</p>${event.foto ? `<img src="${escapeHTML(event.foto)}" alt="Recuerdo: ${escapeHTML(event.titulo)}" loading="lazy">` : ''}</div></article>`).join('');
+
+    // Cuestionario: se valida una respuesta por pregunta y se permite volver a intentarlo.
+    let currentQuestion = 0;
+    let score = 0;
+    const quizProgress = $('.progress-track');
+    function renderQuestion() {
+      const question = CONFIG.quiz.questions[currentQuestion];
+      $('#question-count').textContent = `Pregunta ${currentQuestion + 1} de ${CONFIG.quiz.questions.length}`;
+      $('#score-label').textContent = `Aciertos: ${score}`;
+      quizProgress.setAttribute('aria-valuemax', CONFIG.quiz.questions.length);
+      quizProgress.setAttribute('aria-valuenow', currentQuestion);
+      $('#progress-fill').style.width = `${(currentQuestion / CONFIG.quiz.questions.length) * 100}%`;
+      $('#quiz-question').textContent = question.question;
+      $('#quiz-feedback').textContent = '';
+      $('#quiz-next').classList.remove('is-visible');
+      $('#answers').innerHTML = question.options.map((option, index) => `<button class="answer" type="button" data-answer="${index}">${escapeHTML(option)}</button>`).join('');
+      $('#answers').querySelectorAll('.answer').forEach(button => button.addEventListener('click', () => {
+        const chosen = Number(button.dataset.answer);
+        const correct = chosen === question.correct;
+        if (correct) score++;
+        $('#score-label').textContent = `Aciertos: ${score}`;
+        $('#answers').querySelectorAll('.answer').forEach((answer, index) => {
+          answer.disabled = true;
+          if (index === question.correct) answer.classList.add('correct');
+          else if (index === chosen) answer.classList.add('incorrect');
+        });
+        $('#quiz-feedback').textContent = correct ? question.correctNote : question.wrongNote;
+        $('#quiz-next').classList.add('is-visible');
+      }));
+    }
+    function finishQuiz() {
+      $('#quiz-game').hidden = true;
+      $('#quiz-result').classList.add('is-visible');
+      const passed = score >= CONFIG.quiz.minimumCorrect;
+      $('#result-title').textContent = passed ? 'Premio desbloqueado.' : 'Nos debemos la revancha.';
+      $('#result-copy').textContent = passed ? `Acertaste ${score} de ${CONFIG.quiz.questions.length}. Este premio ya es tuyo:` : `Acertaste ${score} de ${CONFIG.quiz.questions.length}. El premio espera; seguro que la próxima ronda te acerca.`;
+      $('#prize-text').textContent = passed ? CONFIG.quiz.prize : 'Una nueva oportunidad de recordar todo lo bonito.';
+      if (passed) celebrate();
+      $('#retry-button').textContent = passed ? 'Jugar otra vez' : 'Intentar de nuevo';
+    }
+    $('#quiz-next').addEventListener('click', () => {
+      currentQuestion++;
+      if (currentQuestion >= CONFIG.quiz.questions.length) finishQuiz();
+      else renderQuestion();
+    });
+    $('#retry-button').addEventListener('click', () => {
+      currentQuestion = 0; score = 0;
+      $('#quiz-game').hidden = false;
+      $('#quiz-result').classList.remove('is-visible');
+      renderQuestion();
+    });
+    function celebrate() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const colors = ['#64865e', '#cf7f91', '#d9b84f', '#a9bd9e'];
+      for (let i = 0; i < 42; i++) {
+        const piece = document.createElement('span');
+        piece.className = 'confetti';
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.background = colors[i % colors.length];
+        piece.style.setProperty('--drift', `${Math.random() * 180 - 90}px`);
+        piece.style.animationDelay = `${Math.random() * .6}s`;
+        document.body.append(piece);
+        piece.addEventListener('animationend', () => piece.remove(), { once: true });
+      }
+    }
+    renderQuestion();
+
+    // Tarjetas del jardín; SVG dibujado en línea, sin imágenes ni librerías externas.
+    const flowerGrid = $('#flower-grid');
+    flowerGrid.innerHTML = CONFIG.flowers.map((flower, index) => `
+      <button class="flower-card" type="button" data-flower="${index}" aria-label="Leer el recuerdo de ${escapeHTML(flower.nombre)}">
+        <span class="flower-art"><svg viewBox="0 0 100 110" role="img" aria-label="Ilustración sencilla de una flor"><path d="M50 98V52M50 77c-17 0-24-11-24-11 14-6 23-2 24 11Zm0-11c16 1 23-8 23-8-13-7-23-3-23 8Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 45c-17 1-17-18-5-20-1-15 17-17 21-4 15-1 17 17 4 22 0 15-19 16-20 2Z" fill="#cf7f91" stroke="currentColor" stroke-width="2"/><circle cx="51" cy="35" r="6" fill="#d9b84f"/></svg></span>
+        <span class="flower-info"><h3>${escapeHTML(flower.nombre)}</h3><p>${escapeHTML(flower.fecha)} · ${escapeHTML(flower.ocasion)}</p><p class="flower-note">Toca para leer el recuerdo →</p></span>
+      </button>`).join('');
+    $('#flower-count').textContent = `${CONFIG.flowers.length} ${CONFIG.flowers.length === 1 ? 'flor' : 'flores'} y contando`;
+    const flowerDialog = $('#flower-dialog');
+    flowerGrid.addEventListener('click', event => {
+      const card = event.target.closest('[data-flower]');
+      if (!card) return;
+      const flower = CONFIG.flowers[Number(card.dataset.flower)];
+      $('#flower-dialog-title').textContent = flower.nombre;
+      $('#flower-dialog-copy').textContent = flower.nota;
+      flowerDialog.showModal();
+    });
+    $('#close-flower-dialog').addEventListener('click', () => flowerDialog.close());
+    flowerDialog.addEventListener('click', event => { if (event.target === flowerDialog) flowerDialog.close(); });
+
+    // Menú móvil y apertura de la página desde la bienvenida.
+    $('#start-button').addEventListener('click', () => {
+      $('#welcome').classList.add('is-gone');
+      $('#site').classList.add('is-ready');
+      document.body.classList.remove('locked');
+      setTimeout(() => $('#fotos').focus({ preventScroll: true }), 350);
+    });
+    document.body.classList.add('locked');
+    const menuButton = $('.nav-toggle');
+    const navLinks = $('#nav-links');
+    menuButton.addEventListener('click', () => {
+      const open = menuButton.getAttribute('aria-expanded') !== 'true';
+      menuButton.setAttribute('aria-expanded', String(open));
+      menuButton.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+      navLinks.classList.toggle('is-open', open);
+    });
+    navLinks.addEventListener('click', event => {
+      if (event.target.closest('a')) {
+        navLinks.classList.remove('is-open');
+        menuButton.setAttribute('aria-expanded', 'false');
+        menuButton.setAttribute('aria-label', 'Abrir menú');
+      }
+    });
+
+    // Animaciones de entrada al aparecer en pantalla; contenido visible si no hay soporte.
+    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); }
+      }), { threshold: .12 });
+      document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
+    } else {
+      document.querySelectorAll('.reveal').forEach(element => element.classList.add('is-visible'));
+    }
+  </script>
+</body>
+</html>
