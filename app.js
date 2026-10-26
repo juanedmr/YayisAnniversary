@@ -58,10 +58,17 @@ if (welcome && startButton) {
 const gallery = $('#gallery-grid');
 if (gallery) {
   let photoIndex = 0;
+  const frameTypes = ['portrait', 'landscape', 'wide', 'square', 'tall'];
+  const framePool = Array.from({ length: Math.ceil(CONFIG.photos.length / frameTypes.length) }, () => [...frameTypes]).flat();
+  for (let index = framePool.length - 1; index > 0; index--) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [framePool[index], framePool[randomIndex]] = [framePool[randomIndex], framePool[index]];
+  }
+  const shuffledFrames = framePool.slice(0, CONFIG.photos.length);
   gallery.innerHTML = CONFIG.photos.map((photo, index) => `
-    <button class="photo-card" type="button" data-photo="${index}" aria-label="Ver foto: ${escapeHTML(photo.caption)}">
+    <button class="photo-card frame-${shuffledFrames[index]}" type="button" data-photo="${index}" aria-label="Ver foto: ${escapeHTML(photo.caption)}">
       <span class="photo-art">${photo.src ? `<img src="${escapeHTML(photo.src)}" alt="${escapeHTML(photo.caption)}" loading="lazy">` : `<span class="photo-placeholder">Añade aquí<br>tu foto ${index + 1}</span>`}</span>
-      <span class="photo-caption"><span>${escapeHTML(photo.caption)}</span><time>${escapeHTML(photo.fecha)}</time></span>
+      <span class="photo-caption"><span>${escapeHTML(photo.caption)}</span></span>
     </button>`).join('');
   const lightbox = $('#lightbox');
   function showPhoto(index) {
@@ -70,7 +77,6 @@ if (gallery) {
     const photo = CONFIG.photos[photoIndex];
     $('#lightbox-image').innerHTML = photo.src ? `<img src="${escapeHTML(photo.src)}" alt="${escapeHTML(photo.caption)}">` : `<span class="photo-placeholder">Añade aquí tu foto ${photoIndex + 1}</span>`;
     $('#lightbox-caption').textContent = photo.caption;
-    $('#lightbox-date').textContent = photo.fecha;
   }
   gallery.addEventListener('click', event => {
     const card = event.target.closest('[data-photo]');

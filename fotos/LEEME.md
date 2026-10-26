@@ -2,11 +2,11 @@
 
 Ya están conectadas las imágenes que compartiste:
 
-- **Yayis siendo Yayis:** 49 fotos en `fotos/YayisSiendoYayis/`, renombradas `yayis-01.jpeg` a `yayis-49.jpeg`. Aparecen en `fotos.html` con títulos numerados.
+- **Yayis siendo Yayis:** 49 fotos en `fotos/YayisSiendoYayis/`. La galería muestra como descripción el nombre de cada archivo, sin la extensión ni la fecha.
 - **Flores:** 28 imágenes en `fotos/flores/`, renombradas `flor-01.jpeg` a `flor-28.jpeg`. Aparecen como tarjetas numeradas en `flores.html`.
 - Los primeros tres momentos de `historia.html` ya usan las fotos 01, 02 y 03 de Yayis.
 
-Las referencias se generan en `config.js` con rutas relativas, así que puedes editar ahí pies de foto, fechas, nombres de flores, ocasiones y notas. Para cambiar una imagen, conserva el nombre numerado esperado o cambia su ruta en `config.js`. No muevas las carpetas: sus rutas se usan desde todas las páginas.
+Las referencias están en `config.js` con rutas relativas. Los marcos de la galería se mezclan aleatoriamente entre formatos verticales, panorámicos, apaisados y cuadrados. Para cambiar una imagen, actualiza su `src` y `caption` en `config.js`; no muevas las carpetas porque las rutas se usan desde todas las páginas.
 
 Las fechas, ocasiones y recuerdos siguen como marcadores para que agregues los datos reales. El sitio tiene páginas separadas: `index.html`, `fotos.html`, `historia.html`, `quiz.html` y `flores.html`.
 
