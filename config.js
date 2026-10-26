@@ -1,21 +1,22 @@
 // EDITA ESTE ARCHIVO para personalizar la página. No necesitas tocar index.html.
-// Guarda las imágenes dentro de la carpeta "fotos" y escribe aquí su ruta, por ejemplo: "fotos/recuerdo-01.jpg".
+// Las fotos enumeradas se cargan desde fotos/YayisSiendoYayis y fotos/flores.
+// Puedes cambiar sus pies de foto, fechas y recuerdos sin renombrar las imágenes.
 const CONFIG = {
-  name: "[NOMBRE]",
-  duration: "[TIEMPO]",
+  name: "Yayis",
+  startDate: "2025-10-28", // Fecha en formato AAAA-MM-DD; el contador se calcula automáticamente.
   welcome: "Hice este rincón para guardar lo que más me gusta: nuestras historias, incluso las pequeñas.",
-  photos: [
-    { src: "", caption: "Ese día que no queríamos que terminara", fecha: "[FECHA]" },
-    { src: "", caption: "Una pausa en medio de cualquier día", fecha: "[FECHA]" },
-    { src: "", caption: "Nuestro lugar, por un ratito", fecha: "[FECHA]" },
-    { src: "", caption: "La risa que salió sin planear", fecha: "[FECHA]" },
-    { src: "", caption: "Un recuerdo que siempre vuelve", fecha: "[FECHA]" },
-    { src: "", caption: "Otro día siendo equipo", fecha: "[FECHA]" }
-  ],
+  photos: Array.from({ length: 49 }, (_, index) => {
+    const number = String(index + 1).padStart(2, "0");
+    return {
+      src: `fotos/YayisSiendoYayis/yayis-${number}.jpeg`,
+      caption: `Yayis siendo Yayis ${number}`,
+      fecha: "[FECHA]"
+    };
+  }),
   events: [
-    { fecha: "[FECHA]", titulo: "Cómo nos conocimos", detalle: "[Escribe aquí cómo empezó todo: dónde, cuándo y qué recuerdas de ese primer momento.]", foto: "" },
-    { fecha: "[FECHA]", titulo: "Nuestra primera cita", detalle: "[Añade un detalle que todavía te haga sonreír: el lugar, la conversación o los nervios.]", foto: "" },
-    { fecha: "[FECHA]", titulo: "Un día que se quedó", detalle: "[Un viaje, una pequeña tradición o cualquier momento que quieras guardar.]", foto: "" }
+    { fecha: "[FECHA]", titulo: "Cómo nos conocimos", detalle: "[Escribe aquí cómo empezó todo: dónde, cuándo y qué recuerdas de ese primer momento.]", foto: "fotos/YayisSiendoYayis/yayis-01.jpeg" },
+    { fecha: "[FECHA]", titulo: "Nuestra primera cita", detalle: "[Añade un detalle que todavía te haga sonreír: el lugar, la conversación o los nervios.]", foto: "fotos/YayisSiendoYayis/yayis-02.jpeg" },
+    { fecha: "[FECHA]", titulo: "Un día que se quedó", detalle: "[Un viaje, una pequeña tradición o cualquier momento que quieras guardar.]", foto: "fotos/YayisSiendoYayis/yayis-03.jpeg" }
   ],
   quiz: {
     minimumCorrect: 2,
@@ -26,8 +27,15 @@ const CONFIG = {
       { question: "¿Qué palabra describe mejor nuestro equipo?", options: ["[Opción A]", "[Opción B]", "[Opción C]"], correct: 2, correctNote: "Esa era. Seguimos siendo un buen equipo.", wrongNote: "No era esa, pero me gusta cómo piensas." }
     ]
   },
-  flowers: [
-    { nombre: "[Nombre de la flor]", fecha: "[FECHA]", ocasion: "[Ocasión]", nota: "[Escribe la historia o el recuerdo que acompaña a estas flores.]" },
-    { nombre: "[Nombre de la flor]", fecha: "[FECHA]", ocasion: "[Ocasión]", nota: "[Añade aquí una pequeña nota que solo ustedes entiendan.]" }
-  ]
+  flowers: Array.from({ length: 28 }, (_, index) => {
+    const number = String(index + 1).padStart(2, "0");
+    return {
+      nombre: `Flor ${number}`,
+      foto: `fotos/flores/flor-${number}.jpeg`,
+      fotoAlt: `Foto de la flor ${number}`,
+      fecha: "[FECHA]",
+      ocasion: "[Ocasión]",
+      nota: "[Añade el recuerdo o la nota que acompaña a esta flor.]"
+    };
+  })
 };

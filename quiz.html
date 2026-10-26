@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#fff9e8">
+  <title>Un juego — Para nosotros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="quiz">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="topbar"><nav class="nav-wrap" aria-label="Navegación principal">
+    <a class="brand" href="index.html" data-name>Para nosotros</a><button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links">☰</button>
+    <ul class="nav-links" id="nav-links"><li><a href="fotos.html">Fotos</a></li><li><a href="historia.html">Nuestra historia</a></li><li><a href="quiz.html">Un juego</a></li><li><a href="flores.html">El jardín</a></li></ul>
+  </nav></header>
+  <main id="contenido" class="page"><span class="eyebrow">A ver qué tanto te acuerdas</span><h1 class="page-title">Una ronda sobre nosotros</h1><p class="page-intro">Sin presión: algunas respuestas las sabemos de memoria y otras las inventamos sobre la marcha.</p>
+    <section class="quiz-wrap" aria-label="Cuestionario">
+      <div id="quiz-game"><div class="quiz-top"><span id="question-count"></span><span id="score-label">Aciertos: 0</span></div><div class="progress-track" role="progressbar" aria-label="Progreso del cuestionario" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div><h2 class="quiz-question" id="quiz-question"></h2><div class="answers" id="answers"></div><p class="quiz-feedback" id="quiz-feedback" aria-live="polite"></p><button class="button quiz-next" id="quiz-next" type="button">Siguiente pregunta <span aria-hidden="true">→</span></button></div>
+      <div class="quiz-result" id="quiz-result" aria-live="polite"><span class="eyebrow">La ronda termina aquí</span><h2 id="result-title"></h2><p id="result-copy"></p><div class="prize" id="prize-text"></div><button class="button" id="retry-button" type="button">Jugar otra vez</button></div>
+      <details class="question-editor"><summary>Añadir preguntas al juego</summary><p class="editor-note">Las preguntas nuevas se guardan en este navegador. Para incluirlas en la página publicada para todos, agrégalas también a <strong>quiz.questions</strong> dentro de config.js.</p>
+        <form id="question-form"><div class="editor-grid"><div class="field full"><label for="new-question">Pregunta</label><input id="new-question" name="question" required maxlength="180" placeholder="¿Cuál fue nuestro primer viaje?"></div>
+          <div class="field"><label for="option-0">Opción A</label><input id="option-0" name="option0" required maxlength="100"></div><div class="field"><label for="option-1">Opción B</label><input id="option-1" name="option1" required maxlength="100"></div>
+          <div class="field"><label for="option-2">Opción C</label><input id="option-2" name="option2" required maxlength="100"></div><div class="field"><label for="option-3">Opción D (opcional)</label><input id="option-3" name="option3" maxlength="100"></div>
+          <div class="field"><label for="correct-option">Respuesta correcta</label><select id="correct-option" name="correct"><option value="0">Opción A</option><option value="1">Opción B</option><option value="2">Opción C</option><option value="3">Opción D</option></select></div>
+          <div class="field"><label for="correct-note">Comentario si acierta</label><input id="correct-note" name="correctNote" maxlength="160" value="Lo sabía, ese recuerdo también es tuyo."></div>
+          <div class="field full"><label for="wrong-note">Comentario si falla</label><input id="wrong-note" name="wrongNote" maxlength="160" value="Casi; igual me encanta recordarlo contigo."></div>
+        </div><div class="editor-actions"><button class="button" type="submit">Guardar pregunta</button><button class="button secondary" id="clear-custom-questions" type="button">Borrar preguntas añadidas</button></div><p class="editor-status" id="editor-status" aria-live="polite"></p></form>
+      </details>
+    </section>
+  </main>
+  <footer class="footer"><span data-name></span>, gracias por todos los días que todavía no sabemos que serán nuestros.</footer>
+  <script src="config.js"></script><script src="app.js"></script>
+</body>
+</html>

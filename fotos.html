@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#fff9e8">
+  <title>Yayis siendo yayis — Para nosotros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="photos">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="topbar"><nav class="nav-wrap" aria-label="Navegación principal">
+    <a class="brand" href="index.html" data-name>Para nosotros</a><button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links">☰</button>
+    <ul class="nav-links" id="nav-links"><li><a href="fotos.html">Fotos</a></li><li><a href="historia.html">Nuestra historia</a></li><li><a href="quiz.html">Un juego</a></li><li><a href="flores.html">El jardín</a></li></ul>
+  </nav></header>
+  <main id="contenido" class="page"><span class="eyebrow">Instantes guardados</span><h1 class="page-title">Yayis siendo Yayis</h1><p class="page-intro">Una colección de fotos numeradas para volver a esos momentos. Toca cualquiera para verla en grande.</p><div class="gallery-grid" id="gallery-grid" aria-label="Galería de fotos de Yayis"></div></main>
+  <dialog id="lightbox" aria-label="Foto ampliada"><div class="lightbox-image" id="lightbox-image"></div><div class="lightbox-meta"><p><strong id="lightbox-caption"></strong><br><time id="lightbox-date"></time></p><div class="lightbox-controls"><button class="icon-button" id="previous-photo" type="button" aria-label="Foto anterior">←</button><button class="icon-button" id="next-photo" type="button" aria-label="Foto siguiente">→</button><button class="icon-button" id="close-lightbox" type="button" aria-label="Cerrar foto">×</button></div></div></dialog>
+  <footer class="footer"><span data-name></span>, gracias por todos los días que todavía no sabemos que serán nuestros.</footer>
+  <script src="config.js"></script><script src="app.js"></script>
+</body>
+</html>
