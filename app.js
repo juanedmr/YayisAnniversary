@@ -123,17 +123,23 @@ if (timeline) {
 const quizGame = $('#quiz-game');
 if (quizGame) {
   const storageKey = 'yayis-anniversary-custom-questions-v1';
+  const answersStorageKey = 'yayis-anniversary-quiz-answers-v1';
   let extraQuestions = [];
   try { extraQuestions = JSON.parse(localStorage.getItem(storageKey) || '[]'); } catch { extraQuestions = []; }
   if (!Array.isArray(extraQuestions)) extraQuestions = [];
   const allQuestions = [...CONFIG.quiz.questions, ...extraQuestions];
-  let currentQuestion = 0;
-  let score = 0;
+  let savedAnswers = [];
+  try {
+    const saved = JSON.parse(localStorage.getItem(answersStorageKey) || 'null');
+    if (saved?.version === 1 && Array.isArray(saved.answers)) savedAnswers = saved.answers;
+  } catch { savedAnswers = []; }
+  savedAnswers = savedAnswers.filter((answer, index) => allQuestions[index]
+    && answer.questionId === (allQuestions[index].id || `q${index + 1}`));
+  let currentQuestion = savedAnswers.length;
   const progress = $('.progress-track');
   function renderQuestion() {
     const question = allQuestions[currentQuestion];
     $('#question-count').textContent = `Pregunta ${currentQuestion + 1} de ${allQuestions.length}`;
-    $('#score-label').textContent = `Aciertos: ${score}`;
     progress.setAttribute('aria-valuemax', allQuestions.length);
     progress.setAttribute('aria-valuenow', currentQuestion);
     $('#progress-fill').style.width = `${(currentQuestion / allQuestions.length) * 100}%`;
@@ -143,15 +149,17 @@ if (quizGame) {
     $('#answers').innerHTML = question.options.map((option, index) => `<button class="answer" type="button" data-answer="${index}">${escapeHTML(option)}</button>`).join('');
     $('#answers').querySelectorAll('.answer').forEach(button => button.addEventListener('click', () => {
       const chosen = Number(button.dataset.answer);
-      const correct = chosen === question.correct;
-      if (correct) score++;
-      $('#score-label').textContent = `Aciertos: ${score}`;
-      $('#answers').querySelectorAll('.answer').forEach((answer, index) => {
-        answer.disabled = true;
-        if (index === question.correct) answer.classList.add('correct');
-        else if (index === chosen) answer.classList.add('incorrect');
+      $('#answers').querySelectorAll('.answer').forEach(answer => { answer.disabled = true; });
+      savedAnswers.push({
+        questionId: question.id || `q${currentQuestion + 1}`,
+        question: question.question,
+        selectedOptionIndex: chosen,
+        selectedOption: question.options[chosen]
       });
-      $('#quiz-feedback').textContent = correct ? question.correctNote : question.wrongNote;
+      try {
+        localStorage.setItem(answersStorageKey, JSON.stringify({ version: 1, updatedAt: new Date().toISOString(), answers: savedAnswers }));
+      } catch { /* El juego sigue aunque el navegador no permita guardar respuestas. */ }
+      $('#quiz-feedback').textContent = 'Respuesta guardada.';
       $('#quiz-next').classList.add('is-visible');
     }));
   }
@@ -172,16 +180,14 @@ if (quizGame) {
   function finishQuiz() {
     quizGame.hidden = true;
     $('#quiz-result').classList.add('is-visible');
-    const passed = score >= CONFIG.quiz.minimumCorrect;
-    $('#result-title').textContent = passed ? 'Premio desbloqueado.' : 'Nos debemos la revancha.';
-    $('#result-copy').textContent = passed
-      ? `Acertaste ${score} de ${allQuestions.length}. Este premio ya es tuyo:`
-      : `Acertaste ${score} de ${allQuestions.length}. El premio espera; seguro que la próxima ronda te acerca.`;
-    $('#prize-text').textContent = passed ? CONFIG.quiz.prize : 'Una nueva oportunidad de recordar todo lo bonito.';
-    $('#retry-button').textContent = passed ? 'Jugar otra vez' : 'Intentar de nuevo';
+    $('#result-title').textContent = 'Premio desbloqueado.';
+    $('#result-copy').textContent = `Terminaste las ${allQuestions.length} preguntas. Tu premio sorpresa te espera:`;
+    $('#prize-text').textContent = CONFIG.quiz.prize;
+    $('#prize-letter-link').hidden = false;
+    $('#retry-button').textContent = 'Jugar otra vez';
     progress.setAttribute('aria-valuenow', allQuestions.length);
     $('#progress-fill').style.width = '100%';
-    if (passed) celebrate();
+    celebrate();
   }
   $('#quiz-next').addEventListener('click', () => {
     currentQuestion++;
@@ -190,12 +196,14 @@ if (quizGame) {
   });
   $('#retry-button').addEventListener('click', () => {
     currentQuestion = 0;
-    score = 0;
+    savedAnswers = [];
+    try { localStorage.removeItem(answersStorageKey); } catch { /* El juego sigue aunque el navegador restrinja el almacenamiento. */ }
     quizGame.hidden = false;
     $('#quiz-result').classList.remove('is-visible');
     renderQuestion();
   });
-  renderQuestion();
+  if (currentQuestion >= allQuestions.length) finishQuiz();
+  else renderQuestion();
 
   const questionForm = $('#question-form');
   const editorStatus = $('#editor-status');
@@ -203,17 +211,14 @@ if (quizGame) {
     event.preventDefault();
     const formData = new FormData(questionForm);
     const options = [0, 1, 2, 3].map(index => String(formData.get(`option${index}`) || '').trim()).filter(Boolean);
-    const correct = Number(formData.get('correct'));
-    if (options.length < 3 || correct >= options.length) {
-      editorStatus.textContent = 'Completa al menos tres opciones y elige una respuesta correcta que exista.';
+    if (options.length < 3) {
+      editorStatus.textContent = 'Completa al menos tres opciones.';
       return;
     }
     const question = {
+      id: `custom-${Date.now()}`,
       question: String(formData.get('question')).trim(),
-      options,
-      correct,
-      correctNote: String(formData.get('correctNote')).trim(),
-      wrongNote: String(formData.get('wrongNote')).trim()
+      options
     };
     extraQuestions.push(question);
     try {
@@ -225,22 +230,45 @@ if (quizGame) {
     }
     allQuestions.push(question);
     questionForm.reset();
-    $('#correct-note').value = 'Lo sabía, ese recuerdo también es tuyo.';
-    $('#wrong-note').value = 'Casi; igual me encanta recordarlo contigo.';
     editorStatus.textContent = 'Pregunta guardada. Aparecerá en la siguiente ronda y queda guardada en este navegador.';
-    if (currentQuestion === 0 && score === 0) renderQuestion();
+    if (currentQuestion === 0) renderQuestion();
   });
   $('#clear-custom-questions').addEventListener('click', () => {
     extraQuestions = [];
+    savedAnswers = [];
     try { localStorage.removeItem(storageKey); } catch { /* El juego sigue disponible aunque el navegador restrinja el almacenamiento. */ }
+    try { localStorage.removeItem(answersStorageKey); } catch { /* El juego sigue disponible aunque el navegador restrinja el almacenamiento. */ }
     allQuestions.splice(CONFIG.quiz.questions.length);
     currentQuestion = 0;
-    score = 0;
     quizGame.hidden = false;
     $('#quiz-result').classList.remove('is-visible');
     renderQuestion();
     editorStatus.textContent = 'Se borraron las preguntas añadidas en este navegador.';
   });
+}
+
+// Carta del premio: combina la plantilla editable con las respuestas guardadas del cuestionario.
+const letterPage = $('#letter-body');
+if (letterPage) {
+  const answersKey = 'yayis-anniversary-quiz-answers-v1';
+  let savedAnswers = [];
+  try {
+    const saved = JSON.parse(localStorage.getItem(answersKey) || 'null');
+    if (saved?.version === 1 && Array.isArray(saved.answers)) savedAnswers = saved.answers;
+  } catch { savedAnswers = []; }
+  const answerById = Object.fromEntries(savedAnswers.map(answer => [answer.questionId, answer.selectedOption || '']));
+  const template = CONFIG.quiz.letterTemplate || '';
+  const letter = template.replace(/\{\{(name|q[1-8])\}\}/g, (_match, token) =>
+    token === 'name' ? CONFIG.name : answerById[token] || '________');
+  const letterContent = letter || 'Tu carta todavía está por escribirse. Cuando la tengas lista, colócala en CONFIG.quiz.letterTemplate dentro de config.js. Las respuestas de la ronda ya pueden usarse con los marcadores {{q1}} a {{q8}}.';
+  letterPage.innerHTML = escapeHTML(letterContent).replace(/\[\[([ui]):([\s\S]*?)\]\]/g, (_match, style, text) =>
+    style === 'u' ? `<u>${text}</u>` : `<em>${text}</em>`);
+  $('#letter-status').textContent = savedAnswers.length
+    ? `Se guardaron ${savedAnswers.length} pinocho respuestas que me diste para esta carta que hice con mucho amor para ti Yayis.`
+    : 'Aún no hay respuestas guardadas. Completa la ronda del juego y vuelve a esta carta.';
+  $('#letter-answers').innerHTML = savedAnswers.map(answer => `
+    <div class="letter-answer"><dt>${escapeHTML(answer.question)}</dt><dd>${escapeHTML(answer.selectedOption)}</dd></div>`).join('')
+    || '<p class="letter-empty">Tus respuestas aparecerán aquí después de jugar.</p>';
 }
 
 // Jardín sin límite fijo: cada objeto de CONFIG.flowers se representa como una tarjeta.

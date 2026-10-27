@@ -57,7 +57,6 @@ const CONFIG = {
         { src: "fotos/YayisSiendoYayis/Yoyopa.jpeg", caption: "Yoyopa" }
     ],
     // Cada objeto corresponde a una foto de fotos/timeline. Fecha tomada del nombre del archivo (DDMMYY).
-    // Puedes editar el título y el detalle de cada recuerdo por separado.
     events: [
         { fecha: "010725", titulo: "Lucha libre en familia", detalle: "Entre máscaras, gritos y buena compañía, compartimos una noche distinta que terminó en el inicio de la amistad, recuerdo como gritaste esa noche y dije 'uhmmm algo tiene, además de novio'.", foto: "fotos/timeline/1-010725.jpeg" },
         { fecha: "080725", titulo: "La segunda lucha", detalle: "¿Están bien estos asientos? Había seleccionado solo dos y tú dijiste 'Sii', ahí dije si la llevo a ver el kemonito", foto: "fotos/timeline/2 080725.jpeg" },
@@ -65,7 +64,7 @@ const CONFIG = {
         { fecha: "060825", titulo: "Dos plantitas, dos sonrisas", detalle: "Un pequeño detalle que tuve que mandar a la Karla a comprar para cuando saliste de tu SS, mandaste 'Tú y yo'.", foto: "fotos/timeline/4 060825.jpeg" },
         { fecha: "090825", titulo: "Antes del salón", detalle: "'No los puedo acompañar ando estudiando en el Starbi'.", foto: "fotos/timeline/5 090825.jpeg" },
         { fecha: "100935", titulo: "Una noche para brindar y besar", detalle: "Esa noche en el salón Candela, de verdad gran historia de origen, te besé o me besaste y desbesada no hubo.", foto: "fotos/timeline/6 100935.jpeg" },
-        { fecha: "160825", titulo: "Curación", detalle: "Ese día me curaste mi espalda y me tapaste unos chupetones que me salierpon después del boliche, raro.", foto: "fotos/timeline/7 160825.jpeg" },
+        { fecha: "160825", titulo: "Curación", detalle: "Ese día me curaste mi espalda y me tapaste unos chupetones que me salieron después del boliche, raro.", foto: "fotos/timeline/7 160825.jpeg" },
         { fecha: "200825", titulo: "Despedida y cartita", detalle: "Ese día nos despedimos porque te ibas a quitar chichi, te di flores y escribí una cartita, lloraste, me lleno mi corazoncito.", foto: "fotos/timeline/8 200825.jpeg" },
         { fecha: "220825", titulo: "Un pulgar arriba", detalle: "Tu sonrisa y ese gesto dicen más que cualquier explicación: ahí estás, echándole ganas, pero sion chichi.", foto: "fotos/timeline/9 220825.jpeg" },
         { fecha: "270825", titulo: "Una caja y mucha emoción", detalle: "La emoción de abrir la sirena negra McDonalds de la Hello Kitty, la bautizamos Kevin.", foto: "fotos/timeline/10 270825.jpeg" },
@@ -126,11 +125,21 @@ const CONFIG = {
     ],
     quiz: {
         minimumCorrect: 2,
-        prize: "[Describe aquí el premio: una cena, una escapada, una carta…]",
+        prize: "[Tu premio sorpresa]",
+        // Usa {{q1}} ... {{q8}} para respuestas, [[u:este texto]] para subrayar y [[i:este texto]] para cursiva.
+        letterTemplate: "Ahora si, amor mío feliz año, vamos a ver qué tanto te conozco, dentro de esta carta voy a reusar y tratar de predecir tus respuestas. Antes que nada sé que [[u:{{q1}}]] estamos muy contentos de llegar a este gran hito, un año, 365 días juntos y cada uno más lindo que el anterior. Me encanta verte por las mañanas, tardes y noches mientras te hago enojar por muchas cosas, como ahora que vamos a [[u:{{q2}}]]"+
+        ", pero no te enojes, tú sabes que cualquier comida a cualquier hora es una bendición contigo amor. Simplemente el poder compartir contigo me llena de tanto sentimiento, solo el verte a veces me estremezco y como Paco [[u:{{q3}}]] dice [[i: Beba, tengo algo para darte. Muchos corazones de mi parte. Brilla como el sol, es mi diamante]]; un poeta, sino como se ligó a la Loreto Peralta. Al fin y al [[u:{{q4}}]], tú sabes que aunque aún no tengas ese "+
+        "diamante en tu mano viene en camino para ti, incluso puede ser ahora, si quieres de una bajamos a la playa. Jaja, te amo mi amor, de verdad estoy tan agradecido con Diosito de que me ponga en tu camino y podamos ser uno mismo, yo contigo y tú conmigo, agradezco tanto poder ver esa faceta que siento mucho tiempo ocultaste y te sientas libre, así como podemos estar un día viajando en avión al otro comemos como diría el rey Julien: [[u:{{q5}}]] en pijamas en las bancas del Epic. "+
+        "No importa cuantas [[u:{{q6}}]] te pueda regalar eres una persona agradecida y que valora lo que hago, gracias mi amor, porque todo viene desde mi corazón. Me fascina echar pata contigo amor así duremos [[u:{{q7}}]], ufff una máquina, todos los días me paras mi corazón y mi pilín solo de verte, ni siquiera encuerada. Me muero por [[u:{{q8}}]] de verdad, es una ilusión y algo de lo que estoy seguro. Gracias amor por este gran año y contestar estas 8 preguntas para mi carta, fueron 8 porque ese es mi número favorito y tú mi persona favorita, el amor de mi vida, mi confiddente, mi mejor amiga, mi hater, mi amante, mi público, mi Yayis, mi todo y mi mundo entero. Te amo desconmesuradamente, nueva palabra anótala. \n\n Tuyo siempre, Juan",
         questions: [
-            { question: "¿Cuál fue uno de esos días que nos gusta recordar?", options: ["[Opción A]", "[Opción B]", "[Opción C]"], correct: 0, correctNote: "Lo sabía: ese recuerdo también es de tus favoritos.", wrongNote: "Acepto esa respuesta; igual me encanta recordarlo contigo." },
-            { question: "¿Qué pequeño plan nos sale bien casi siempre?", options: ["[Opción A]", "[Opción B]", "[Opción C]"], correct: 1, correctNote: "Exacto. Ya tenemos nuestros clásicos.", wrongNote: "Buena teoría. Podemos comprobarla en nuestra próxima cita." },
-            { question: "¿Qué palabra describe mejor nuestro equipo?", options: ["[Opción A]", "[Opción B]", "[Opción C]"], correct: 2, correctNote: "Esa era. Seguimos siendo un buen equipo.", wrongNote: "No era esa, pero me gusta cómo piensas." }
+            { id: "q1", question: "¿Quién besó a quién primero?", options: ["Tú", "Yo", "Quiensabe", "Los dos"] },
+            { id: "q2", question: "¿Qué horario de comida nos sale bien casi siempre?", options: ["Tragar", "Comer", "Desayunar", "Cenar"] },
+            { id: "q3", question: "¿Qué palabra describe mejor nuestro equipo?", options: ["Fuerte", "Decidido", "Amoroso", "Leal"] },
+            { id: "q4", question: "¿Cuál ha sido uno de nuestros viajes favoritos?", options: ["Monterrey", "Cabo", "Chiapas", "Tapalpa"] },
+            { id: "q5", question: "¿Qué comida o antojo compartimos con gusto?", options: ["Hamburguesa", "Sushi", "Tacos", "Pollo Qin"] },
+            { id: "q6", question: "¿Qué detalle mío te hizo sonreír mucho?", options: ["Cartas", "Flores", "Ninja Creamy", "Jelly Cat"] },
+            { id: "q7", question: "¿Cuánto tiempo en promedio tardamos en ver una película?", options: ["2 horas, lo normal", "1 hr por dos días", "30 min por 4 días", "15 min por 8 días"] },
+            { id: "q8", question: "¿Qué deseo bonito tengo para nuestro futuro?", options: ["Embarazarnos", "Casarnos", "Crecer personalmente", "Ahorrar"] }
         ]
     },
     // Personaliza cada flor directamente: edita nombre y descripcion; conserva foto si no la cambiarás.

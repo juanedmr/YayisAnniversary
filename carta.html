@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fff9e8">
+    <title>La carta del premio — Para nosotros</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-page="letter">
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="topbar">
+        <nav class="nav-wrap" aria-label="Navegación principal">
+            <a class="brand" href="index.html" data-name>Para nosotros</a><button class="nav-toggle" type="button"
+                aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links">☰</button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="fotos.html">Fotos</a></li>
+                <li><a href="historia.html">Nuestra historia</a></li>
+                <li><a href="quiz.html">Un juego</a></li>
+                <li><a href="flores.html">El jardín</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main id="contenido" class="page letter-page">
+        <span class="eyebrow">Tu premio</span>
+        <h1 class="page-title">Una carta para ti</h1>
+        <p class="page-intro" id="letter-status" aria-live="polite"></p>
+        <article class="letter-card">
+            <h2 id="letter-title">Para ti, con todo mi amor</h2>
+            <div class="letter-body" id="letter-body"></div>
+        </article>
+        <a class="button" href="quiz.html">Volver al juego</a>
+    </main>
+    <footer class="footer"><span data-name></span>, leo tu mente.</footer>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -134,6 +134,20 @@ main { overflow: hidden; }
 .quiz-result.is-visible { display: block; }
 .quiz-result h2 { margin: .5rem 0; font: 600 2.5rem var(--serif); }
 .prize { margin: 1.3rem 0; border: 1px dashed var(--green); padding: 1.2rem; background: var(--green-pale); font: italic 1.5rem var(--serif); }
+.prize-letter-link { display: block; width: fit-content; margin: 1rem auto 0; border-bottom: 1px solid currentColor; color: var(--green-dark); font: 600 .95rem var(--sans); text-decoration: none; }
+.prize-letter-link:hover { color: var(--pink); }
+.prize-letter-link[hidden] { display: none; }
+.letter-page { max-width: 900px; }
+.letter-card { margin: 0 0 2rem; border: 1px solid var(--line); padding: clamp(1.5rem, 6vw, 4rem); background: var(--paper); box-shadow: var(--shadow); }
+.letter-card > h2 { margin-bottom: 1.5rem; color: var(--green-dark); font: 600 clamp(2rem, 5vw, 3rem)/1 var(--serif); }
+.letter-body { min-height: 7rem; color: var(--ink); font: 500 1.25rem/1.8 var(--serif); white-space: pre-line; }
+.letter-answers { margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1.5rem; }
+.letter-answers h2 { font: 600 1.8rem/1.1 var(--serif); }
+.letter-answers dl { display: grid; gap: .8rem; margin: 0; }
+.letter-answer { border-left: 3px solid var(--green); padding: .5rem .9rem; background: var(--green-pale); }
+.letter-answer dt { color: var(--muted); font-size: .82rem; font-weight: 600; }
+.letter-answer dd { margin: .2rem 0 0; }
+.letter-empty { margin: 0; color: var(--muted); }
 .question-editor { margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1.5rem; }
 .question-editor summary { color: var(--green-dark); font-weight: 700; cursor: pointer; }
 .editor-note { margin: .6rem 0 1rem; color: var(--muted); font-size: .8rem; }
