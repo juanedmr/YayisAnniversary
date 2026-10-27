@@ -104,11 +104,19 @@ if (gallery) {
 // La línea de tiempo usa un trazado ondulado y alterna los recuerdos a ambos lados.
 const timeline = $('#timeline');
 if (timeline) {
+  // Acepta fechas compactas DDMMYY (por ejemplo, 281025) y las muestra como DD/MM/YY.
+  function formatTimelineDate(value) {
+    const date = String(value ?? '').trim();
+    const compactDate = date.match(/^(\d{2})[./-]?(\d{2})[./-]?(\d{2})$/);
+    return compactDate ? `${compactDate[1]}/${compactDate[2]}/${compactDate[3]}` : date;
+  }
+
   timeline.innerHTML = CONFIG.events.map((event, index) => `
     <article class="event">
       <div class="event-image">${event.foto ? `<img src="${escapeHTML(event.foto)}" alt="${escapeHTML(event.fotoAlt || `Recuerdo: ${event.titulo}`)}" loading="lazy">` : `<span class="photo-placeholder">Añade una foto<br>a este recuerdo</span>`}</div>
-      <div class="event-copy"><time class="event-date">${escapeHTML(event.fecha)}</time><h2>${escapeHTML(event.titulo)}</h2><p>${escapeHTML(event.detalle)}</p></div>
+      <div class="event-copy"><time class="event-date">${escapeHTML(formatTimelineDate(event.fecha))}</time><h2>${escapeHTML(event.titulo)}</h2><p>${escapeHTML(event.detalle)}</p></div>
     </article>`).join('');
+  timeline.insertAdjacentHTML('beforeend', '<p class="timeline-ending" aria-label="Continuará">Continuará<span aria-hidden="true">…</span></p>');
 }
 
 // Cuestionario. Las nuevas preguntas se guardan en localStorage de este navegador.
@@ -238,22 +246,72 @@ if (quizGame) {
 // Jardín sin límite fijo: cada objeto de CONFIG.flowers se representa como una tarjeta.
 const flowerGrid = $('#flower-grid');
 if (flowerGrid) {
-  const flowerSVG = '<svg viewBox="0 0 100 110" role="img" aria-label="Ilustración de una flor"><path d="M50 98V52M50 77c-17 0-24-11-24-11 14-6 23-2 24 11Zm0-11c16 1 23-8 23-8-13-7-23-3-23 8Z" fill="none" stroke="#36583c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 45c-17 1-17-18-5-20-1-15 17-17 21-4 15-1 17 17 4 22 0 15-19 16-20 2Z" fill="#cf7f91" stroke="#36583c" stroke-width="2"/><circle cx="51" cy="35" r="6" fill="#d9b84f"/></svg>';
-  flowerGrid.innerHTML = CONFIG.flowers.map((flower, index) => `
-    <button class="flower-card" type="button" data-flower="${index}" aria-label="Leer el recuerdo de ${escapeHTML(flower.nombre)}">
-      <span class="flower-art">${flower.foto ? `<img src="${escapeHTML(flower.foto)}" alt="${escapeHTML(flower.fotoAlt || flower.nombre)}" loading="lazy">` : flowerSVG}</span>
-      <span class="flower-info"><h2>${escapeHTML(flower.nombre)}</h2><p>${escapeHTML(flower.fecha)} · ${escapeHTML(flower.ocasion)}</p><p class="flower-note">Toca para leer el recuerdo →</p></span>
-    </button>`).join('');
+  const meadow = flowerGrid;
+  const flowers = CONFIG.flowers;
+  function sizeGarden() {
+    const width = meadow.clientWidth || window.innerWidth;
+    let columns;
+    if (width <= 440) columns = flowers.length <= 35 ? 2 : 3;
+    else if (width <= 760) columns = flowers.length <= 8 ? 3 : 4;
+    else if (flowers.length <= 12) columns = 3;
+    else if (flowers.length <= 20) columns = 4;
+    else if (flowers.length <= 30) columns = 5;
+    else if (flowers.length <= 42) columns = 6;
+    else columns = 7;
+    const cellWidth = width / columns;
+    const maximumBloom = width <= 440 ? 150 : width <= 760 ? 142 : 184;
+    const bloomSize = Math.round(Math.max(88, Math.min(maximumBloom, cellWidth * .88)));
+    meadow.style.setProperty('--garden-columns', columns);
+    meadow.style.setProperty('--bloom-size', `${bloomSize}px`);
+    meadow.style.setProperty('--flower-rows', Math.ceil(flowers.length / columns));
+  }
+  sizeGarden();
+  window.addEventListener('resize', sizeGarden, { passive: true });
+
+  flowerGrid.innerHTML = CONFIG.flowers.map((flower, index) => {
+    const tilt = `${(Math.random() * 8 - 4).toFixed(1)}deg`;
+    const stemHeight = `${54 + Math.floor(Math.random() * 68)}px`;
+    const description = flower.descripcion || flower.nota || flower.nombre;
+    const descriptionFontSize = `${Math.max(.82, Math.min(1.05, 48 / Math.max(48, description.length))).toFixed(2)}rem`;
+    return `
+      <button class="garden-flower" type="button" data-flower="${index}" style="--tilt:${tilt};--stem-height:${stemHeight};--description-size:${descriptionFontSize}" aria-label="Ver foto de ${escapeHTML(flower.nombre)}: ${escapeHTML(description)}">
+        <span class="flower-bloom">${flower.foto ? `<img src="${escapeHTML(flower.foto)}" alt="${escapeHTML(flower.fotoAlt || flower.nombre)}" loading="lazy">` : `<span class="photo-placeholder">${escapeHTML(flower.nombre)}</span>`}</span>
+        <span class="flower-description">${escapeHTML(description)}</span>
+        <span class="flower-stem" aria-hidden="true"></span>
+      </button>`;
+  }).join('');
   $('#flower-count').textContent = `${CONFIG.flowers.length} ${CONFIG.flowers.length === 1 ? 'flor' : 'flores'} y contando`;
-  const flowerDialog = $('#flower-dialog');
+  const flowerLightbox = $('#flower-lightbox');
+  let flowerIndex = 0;
+  function showFlower(index) {
+    if (!CONFIG.flowers.length) return;
+    flowerIndex = (index + CONFIG.flowers.length) % CONFIG.flowers.length;
+    const flower = CONFIG.flowers[flowerIndex];
+    const description = flower.descripcion || flower.nota || flower.nombre;
+    $('#flower-lightbox-image').innerHTML = flower.foto
+      ? `<img src="${escapeHTML(flower.foto)}" alt="${escapeHTML(flower.fotoAlt || flower.nombre)}">`
+      : `<span class="photo-placeholder">${escapeHTML(flower.nombre)}</span>`;
+    $('#flower-lightbox-caption').textContent = description;
+  }
   flowerGrid.addEventListener('click', event => {
     const card = event.target.closest('[data-flower]');
     if (!card) return;
-    const flower = CONFIG.flowers[Number(card.dataset.flower)];
-    $('#flower-dialog-title').textContent = flower.nombre;
-    $('#flower-dialog-copy').textContent = flower.nota;
-    flowerDialog.showModal();
+    showFlower(Number(card.dataset.flower));
+    flowerLightbox.showModal();
   });
-  $('#close-flower-dialog').addEventListener('click', () => flowerDialog.close());
-  flowerDialog.addEventListener('click', event => { if (event.target === flowerDialog) flowerDialog.close(); });
+  $('#previous-flower').addEventListener('click', () => showFlower(flowerIndex - 1));
+  $('#next-flower').addEventListener('click', () => showFlower(flowerIndex + 1));
+  $('#close-flower-lightbox').addEventListener('click', () => flowerLightbox.close());
+  flowerLightbox.addEventListener('click', event => { if (event.target === flowerLightbox) flowerLightbox.close(); });
+  document.addEventListener('keydown', event => {
+    if (!flowerLightbox.open) return;
+    if (event.key === 'ArrowLeft') showFlower(flowerIndex - 1);
+    if (event.key === 'ArrowRight') showFlower(flowerIndex + 1);
+  });
+  let touchStartX = 0;
+  flowerLightbox.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].screenX; }, { passive: true });
+  flowerLightbox.addEventListener('touchend', event => {
+    const delta = event.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(delta) > 55) showFlower(flowerIndex + (delta < 0 ? 1 : -1));
+  }, { passive: true });
 }

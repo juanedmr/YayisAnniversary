@@ -100,15 +100,17 @@ main { overflow: hidden; }
 .event:nth-child(odd) { transform: rotate(-1deg); }
 .event::after { position: absolute; top: 1.4rem; right: -2.3rem; width: 14px; height: 14px; border: 3px solid var(--cream); border-radius: 50%; background: var(--pink); box-shadow: 0 0 0 1px var(--green); content: ''; }
 .event:nth-child(even)::after { right: auto; left: -2.3rem; background: var(--yellow); }
-.event-image { position: relative; display: grid; min-height: 180px; aspect-ratio: 1.7; place-items: center; overflow: hidden; background: var(--green-pale); }
+.event-image { position: relative; display: grid; min-height: 0; place-items: center; overflow: hidden; padding: .5rem; background: var(--green-pale); }
 .event:nth-child(3n + 2) .event-image { background: var(--pink-pale); }
 .event:nth-child(3n) .event-image { background: var(--yellow-pale); }
-.event-image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.event-image img { position: relative; display: block; width: 100%; height: auto; max-height: min(68vh, 620px); object-fit: contain; object-position: center; }
 .event-image .photo-placeholder { padding: 1rem; }
 .event-copy { padding: 1rem 1.25rem 1.3rem; }
 .event-date { color: var(--green-dark); font-size: .75rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 .event h2 { margin: .25rem 0 .4rem; font: 600 2rem/1 var(--serif); }
 .event p { margin: 0; color: var(--muted); font-size: .9rem; }
+.timeline-ending { position: relative; z-index: 1; width: fit-content; margin: 3rem auto 1rem; border: 1px solid rgb(54 88 60 / 22%); border-radius: 999px; padding: .8rem 2rem; background: var(--yellow-pale); color: var(--green-dark); font: italic 600 clamp(2rem, 5vw, 3.2rem)/1 var(--serif); box-shadow: var(--shadow); }
+.timeline-ending span { color: var(--pink); }
 /* Preguntas */
 .quiz-wrap { max-width: 760px; margin: auto; border: 1px solid var(--line); padding: clamp(1.3rem, 5vw, 3rem); background: var(--paper); box-shadow: var(--shadow); }
 .quiz-top { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); font-size: .8rem; }
@@ -138,20 +140,30 @@ main { overflow: hidden; }
 .field input, .field select { width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 2px; padding: .6rem .7rem; background: #fff; color: var(--ink); }
 .editor-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1rem; }
 .editor-status { min-height: 1.5rem; margin: .6rem 0 0; color: var(--green-dark); font-size: .8rem; }
-/* Jardín para cualquier número de flores */
-.flower-count { display: inline-block; margin: -.5rem 0 2rem; color: var(--green-dark); font-size: .85rem; font-weight: 700; }
-.flower-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(205px, 1fr)); gap: 1rem; }
-.flower-card { width: 100%; border: 1px solid var(--line); padding: 0; background: var(--paper); text-align: left; cursor: pointer; transition: transform .2s, box-shadow .2s; }
-.flower-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
-.flower-art { position: relative; display: grid; min-height: 170px; place-items: center; overflow: hidden; background: var(--green-pale); }
-.flower-card:nth-child(3n + 2) .flower-art { background: var(--pink-pale); }
-.flower-card:nth-child(3n) .flower-art { background: var(--yellow-pale); }
-.flower-art svg { position: relative; z-index: 1; width: 90px; height: 100px; }
-.flower-art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.flower-info { padding: 1rem 1.1rem 1.2rem; }
-.flower-info h2 { margin: 0; font: 600 1.7rem var(--serif); }
-.flower-info p { margin: .15rem 0 0; color: var(--muted); font-size: .8rem; }
-.flower-info .flower-note { margin-top: .5rem; color: var(--green-dark); }
+/* Prado: fotografías en forma de capullos, tallos y hojas sobre una pradera. */
+.flower-count { display: inline-block; margin: -.5rem 0 1.5rem; color: var(--green-dark); font-size: .85rem; font-weight: 700; }
+.garden-meadow { --garden-columns: 5; --bloom-size: 160px; --flower-rows: 5; position: relative; isolation: isolate; display: grid; grid-template-columns: repeat(var(--garden-columns), minmax(0, 1fr)); align-items: end; gap: .25rem; min-height: max(700px, calc(var(--flower-rows) * 295px)); overflow: hidden; border-radius: 48% 52% 0 0 / 5% 7% 0 0; padding: 4rem clamp(.35rem, 2vw, 1.4rem) 2rem; background: linear-gradient(180deg, #f4edc9 0%, #f8f2d9 16%, #dce8c9 32%, #93b17e 100%); }
+.garden-meadow::before { position: absolute; z-index: -1; right: -10%; bottom: -7%; left: -10%; height: 38%; border-radius: 50% 50% 0 0 / 26% 25% 0 0; background: linear-gradient(180deg, #a9c38e, #719565); content: ''; }
+.garden-meadow::after { position: absolute; z-index: -1; right: -15%; bottom: -13%; left: 30%; height: 35%; border-radius: 50% 50% 0 0 / 30% 28% 0 0; background: linear-gradient(180deg, #8eae78, #5f8758); content: ''; }
+.garden-flower { --stem-height: 82px; --tilt: 0deg; position: relative; z-index: 1; display: flex; min-width: 0; min-height: clamp(280px, 23vw, 350px); flex-direction: column; align-items: center; justify-content: end; border: 0; padding: .5rem .15rem 0; background: transparent; cursor: pointer; transform: rotate(var(--tilt)); transform-origin: center bottom; }
+.garden-flower:nth-child(7n + 2), .garden-flower:nth-child(7n + 5) { min-height: clamp(310px, 26vw, 390px); }
+.garden-flower:nth-child(4n) { min-height: clamp(260px, 21vw, 330px); }
+.flower-bloom { position: relative; z-index: 2; display: grid; width: min(100%, var(--bloom-size)); flex: 0 0 auto; aspect-ratio: 1; place-items: center; overflow: hidden; border: 7px solid #fff4d0; border-radius: 50% 50% 47% 47%; background: var(--pink-pale); box-shadow: 0 4px 14px rgb(52 75 48 / 25%), inset 0 0 0 3px rgb(217 184 79 / 62%); transition: transform .3s ease, box-shadow .3s ease; }
+.garden-flower:nth-child(3n + 2) .flower-bloom { border-radius: 44% 56% 50% 50%; }
+.garden-flower:nth-child(3n) .flower-bloom { border-radius: 48% 48% 38% 38%; }
+.flower-bloom img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.flower-description { position: absolute; z-index: 6; top: 28%; left: 50%; display: grid; width: max-content; max-width: min(250px, 88vw); max-height: 160px; place-items: center; overflow: auto; border: 1px solid rgb(255 249 232 / 75%); border-radius: 12px; padding: .8rem 1rem; background: rgb(41 53 45 / 94%); color: #fffdf7; font-size: var(--description-size, .9rem); font-weight: 500; line-height: 1.45; text-align: center; box-shadow: 0 8px 26px rgb(25 42 27 / 32%); opacity: 0; pointer-events: none; transform: translate(-50%, 8px); transition: opacity .2s ease, transform .2s ease; }
+.garden-flower:hover .flower-bloom, .garden-flower:focus-visible .flower-bloom { transform: scale(1.08); box-shadow: 0 7px 22px rgb(52 75 48 / 35%), inset 0 0 0 3px var(--yellow); }
+.garden-flower:hover .flower-description, .garden-flower:focus-visible .flower-description { opacity: 1; transform: translate(-50%, 0); }
+.garden-flower:hover, .garden-flower:focus-visible { z-index: 7; }
+.flower-stem { position: relative; z-index: 1; display: block; width: 6px; height: var(--stem-height); flex: 0 0 auto; border-radius: 0 0 5px 5px; background: linear-gradient(90deg, #527d50, #82a868 55%, #527d50); }
+.flower-stem::before, .flower-stem::after { position: absolute; top: 28%; width: 24px; height: 12px; border: 1px solid #527d50; border-radius: 100% 0 100% 0; background: #8eb774; content: ''; }
+.flower-stem::before { right: 2px; transform: rotate(25deg); transform-origin: right center; }
+.flower-stem::after { left: 2px; top: 55%; transform: rotate(-25deg) scaleX(-1); transform-origin: left center; }
+/* Espacio para que la descripción también aparezca al tocar en pantallas táctiles. */
+.flower-lightbox { width: min(92vw, 820px); }
+.flower-lightbox-image { position: relative; display: grid; min-height: 42vh; max-height: 72vh; place-items: center; overflow: hidden; background: var(--green-pale); }
+.flower-lightbox-image img { max-width: 100%; max-height: 72vh; object-fit: contain; }
 /* Modales y pie */
 dialog { width: min(92vw, 920px); max-width: none; max-height: 90vh; border: 0; padding: 0; background: var(--paper); color: var(--ink); box-shadow: 0 20px 90px rgb(0 0 0 / 30%); }
 dialog::backdrop { background: rgb(28 38 30 / 78%); backdrop-filter: blur(4px); }
@@ -162,10 +174,6 @@ dialog::backdrop { background: rgb(28 38 30 / 78%); backdrop-filter: blur(4px); 
 .lightbox-meta p { margin: 0; }
 .lightbox-controls { display: flex; gap: .5rem; }
 .icon-button { display: grid; width: 42px; height: 42px; flex: 0 0 auto; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: var(--paper); cursor: pointer; }
-.flower-dialog { width: min(90vw, 440px); padding: 2rem; }
-.flower-dialog h2 { font: 600 2.7rem/.95 var(--serif); }
-.flower-dialog p { color: var(--muted); }
-.close-dialog { position: absolute; top: .7rem; right: .7rem; }
 .footer { padding: 2.5rem 1rem; color: var(--muted); text-align: center; font: italic 1.35rem var(--serif); }
 .confetti { position: fixed; z-index: 99; top: -15px; width: 9px; height: 14px; pointer-events: none; animation: fall 2.3s ease-in forwards; }
 @keyframes fall { to { transform: translate3d(var(--drift), 105vh, 0) rotate(740deg); opacity: .2; } }
@@ -181,6 +189,9 @@ dialog::backdrop { background: rgb(28 38 30 / 78%); backdrop-filter: blur(4px); 
   .photo-card.frame-portrait, .photo-card.frame-tall { grid-column: span 6; }
   .photo-art { min-height: 145px; }
   .photo-caption { display: block; }
+  .garden-meadow { min-height: max(750px, calc(var(--flower-rows) * 270px)); gap: 0; padding: 3rem .5rem 1rem; }
+  .flower-bloom { border-width: 5px; }
+  .flower-stem { height: calc(var(--stem-height) * .8); }
   .timeline::before { left: 7px; width: 38px; background-position: left; }
   .event, .event:nth-child(even) { width: calc(100% - 3.4rem); margin: 0 0 1rem 3.4rem; transform: none; }
   .event::after, .event:nth-child(even)::after { right: auto; left: -2.2rem; }
@@ -195,6 +206,8 @@ dialog::backdrop { background: rgb(28 38 30 / 78%); backdrop-filter: blur(4px); 
   .frame-landscape .photo-art, .frame-wide .photo-art { aspect-ratio: 1.35; }
   .frame-square .photo-art { aspect-ratio: 1; }
   .frame-tall .photo-art { aspect-ratio: .9; }
+  .garden-meadow { min-height: max(900px, calc(var(--flower-rows) * 245px)); padding-inline: .25rem; }
+  .flower-description { max-width: min(220px, 84vw); padding: .65rem .75rem; }
   .editor-grid { grid-template-columns: 1fr; }
   .field.full { grid-column: auto; }
   .lightbox-meta { align-items: flex-start; }

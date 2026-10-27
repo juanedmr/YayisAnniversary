@@ -1,20 +1,55 @@
 <!doctype html>
 <html lang="es">
+
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#fff9e8">
-  <title>Nuestras flores — Para nosotros</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fff9e8">
+    <title>Nuestras flores — Para nosotros</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body data-page="flowers">
-  <a class="skip-link" href="#contenido">Saltar al contenido</a>
-  <header class="topbar"><nav class="nav-wrap" aria-label="Navegación principal">
-    <a class="brand" href="index.html" data-name>Para nosotros</a><button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links">☰</button>
-    <ul class="nav-links" id="nav-links"><li><a href="fotos.html">Fotos</a></li><li><a href="historia.html">Nuestra historia</a></li><li><a href="quiz.html">Un juego</a></li><li><a href="flores.html">El jardín</a></li></ul>
-  </nav></header>
-  <main id="contenido" class="page"><span class="eyebrow">Un jardín de momentos</span><h1 class="page-title">Nuestras flores</h1><p class="page-intro">Hay regalos que se marchitan y otros que se quedan, sobre todo por el momento que los acompaña.</p><p class="flower-count" id="flower-count"></p><div class="flower-grid" id="flower-grid"></div></main>
-  <dialog class="flower-dialog" id="flower-dialog" aria-labelledby="flower-dialog-title"><button class="icon-button close-dialog" id="close-flower-dialog" type="button" aria-label="Cerrar recuerdo">×</button><span class="eyebrow">Una nota del jardín</span><h2 id="flower-dialog-title"></h2><p id="flower-dialog-copy"></p></dialog>
-  <footer class="footer"><span data-name></span>, gracias por todos los días que todavía no sabemos que serán nuestros.</footer>
-  <script src="config.js"></script><script src="app.js"></script>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="topbar">
+        <nav class="nav-wrap" aria-label="Navegación principal">
+            <a class="brand" href="index.html" data-name>Para nosotros</a><button class="nav-toggle" type="button"
+                aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-links">☰</button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="fotos.html">Fotos</a></li>
+                <li><a href="historia.html">Nuestra historia</a></li>
+                <li><a href="quiz.html">Un juego</a></li>
+                <li><a href="flores.html">El jardín</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main id="contenido" class="page garden-page"><span class="eyebrow">Un jardín de momentos</span>
+        <h1 class="page-title">Nuestras flores</h1>
+        <p class="page-intro">Un jardín para pasear despacio. Hay muchas mi amor que no recuerdo o que no tome foto, no por eso son menos importantes
+            sabe que cada flor ha sido elegida y pensada no como una oblifgación sino como un gesto de amor y cariño para ti. Sé cuanto te
+            gustan, como te hacen feliz y para mí no tiene precio.
+        </p>
+        <p class="flower-count" id="flower-count"></p>
+        <div class="garden-meadow" id="flower-grid" aria-label="Jardín de recuerdos florales"></div>
+    </main>
+    <dialog class="flower-lightbox" id="flower-lightbox" aria-label="Foto de flor ampliada">
+        <div class="flower-lightbox-image" id="flower-lightbox-image"></div>
+        <div class="lightbox-meta">
+            <p><strong id="flower-lightbox-caption"></strong></p>
+            <div class="lightbox-controls"><button class="icon-button" id="previous-flower" type="button"
+                    aria-label="Flor anterior">←</button><button class="icon-button" id="next-flower" type="button"
+                    aria-label="Flor siguiente">→</button><button class="icon-button" id="close-flower-lightbox"
+                    type="button" aria-label="Cerrar foto">×</button></div>
+        </div>
+    </dialog>
+    <footer class="footer"><span data-name></span>, y las que me faltan.</footer>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
 </body>
+
 </html>
