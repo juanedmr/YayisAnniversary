@@ -153,7 +153,7 @@ const CONFIG = {
         { nombre: "Flor 07", foto: "fotos/flores/flor-07.jpeg", fotoAlt: "Foto de la flor 07", descripcion: "Naranja" },
         { nombre: "Flor 08", foto: "fotos/flores/flor-08.jpeg", fotoAlt: "Foto de la flor 08", descripcion: "Justo antes de entregarlas" },
         { nombre: "Flor 09", foto: "fotos/flores/flor-09.jpeg", fotoAlt: "Foto de la flor 09", descripcion: "Del perro" },
-        { nombre: "Flor 10", foto: "fotos/flores/flor-10.jpeg", fotoAlt: "Foto de la flor 10", descripcion: "5 meses" },
+        { nombre: "Flor 10", foto: "fotos/flores/flor-10.jpeg", fotoAlt: "Foto de la flor 10", descripcion: "6 meses" },
         { nombre: "Flor 11", foto: "fotos/flores/flor-11.jpeg", fotoAlt: "Foto de la flor 11", descripcion: "Del perro mexicano" },
         { nombre: "Flor 12", foto: "fotos/flores/flor-12.jpeg", fotoAlt: "Foto de la flor 12", descripcion: "Flores amarillas si y de las chivas" },
         { nombre: "Flor 13", foto: "fotos/flores/flor-13.jpeg", fotoAlt: "Foto de la flor 13", descripcion: "Las del Costco" },
